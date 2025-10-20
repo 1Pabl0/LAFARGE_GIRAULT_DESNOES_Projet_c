@@ -1,11 +1,10 @@
-cmake_minimum_required(VERSION 4.0)
-project(LAFARGE_GIRAULT_DESNOES_Projet_c C)
+cmake_minimum_required(VERSION 3.16)
+project(LAFARGE_GIRAULT_DESNOES_Projet_c LANGUAGES C)
 
 set(CMAKE_C_STANDARD 11)
-
-include_directories(.)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
 add_executable(LAFARGE_GIRAULT_DESNOES_Projet_c
+        main.c
         Partie_1.c
-        Partie_1.h
-        main.c)
+)

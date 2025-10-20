@@ -3,6 +3,12 @@
 //
 #include "Partie_1.h"
 
+
+int main(void) {
+    printf("Bonjour ! Le projet compile enfin sur macOS 😄\n");
+    return 0;
+}
+
 //question1
 typedef struct cellule {
     int sommet_arrivee;

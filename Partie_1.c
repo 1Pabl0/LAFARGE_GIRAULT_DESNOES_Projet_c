@@ -3,3 +3,5 @@
 //
 
 #include "Partie_1.h"
+
+#include <stdio.h>

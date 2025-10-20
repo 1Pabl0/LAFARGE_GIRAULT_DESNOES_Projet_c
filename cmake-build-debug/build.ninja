@@ -57,6 +57,14 @@ build CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_1.c.o: C_COMPILER__
   OBJECT_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
   OBJECT_FILE_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
 
+build CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/main.c.o: C_COMPILER__LAFARGE_GIRAULT_DESNOES_Projet_c_unscanned_Debug /Users/edouardlafarge/CLionProjects/LAFARGE_GIRAULT_DESNOES_Projet_c/main.c || cmake_object_order_depends_target_LAFARGE_GIRAULT_DESNOES_Projet_c
+  CONFIG = Debug
+  DEP_FILE = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/main.c.o.d
+  FLAGS = -g -std=gnu11 -arch arm64 -fcolor-diagnostics
+  INCLUDES = -I/Users/edouardlafarge/CLionProjects/LAFARGE_GIRAULT_DESNOES_Projet_c/.
+  OBJECT_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
+  OBJECT_FILE_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target LAFARGE_GIRAULT_DESNOES_Projet_c
@@ -65,7 +73,7 @@ build CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_1.c.o: C_COMPILER__
 #############################################
 # Link the executable LAFARGE_GIRAULT_DESNOES_Projet_c
 
-build LAFARGE_GIRAULT_DESNOES_Projet_c: C_EXECUTABLE_LINKER__LAFARGE_GIRAULT_DESNOES_Projet_c_Debug CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_1.c.o
+build LAFARGE_GIRAULT_DESNOES_Projet_c: C_EXECUTABLE_LINKER__LAFARGE_GIRAULT_DESNOES_Projet_c_Debug CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_1.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/main.c.o
   CONFIG = Debug
   FLAGS = -g -arch arm64
   OBJECT_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir

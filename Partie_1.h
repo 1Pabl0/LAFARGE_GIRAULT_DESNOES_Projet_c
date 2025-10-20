@@ -1,20 +1,50 @@
 //
 // Created by Paul Girault on 20/10/2025.
 //
-#include<stdlib.h>
-#include<stdio.h>
-#include<string.h>
+
+#ifndef PARTIE_1_H
+#define PARTIE_1_H
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// =========================
+// ==== STRUCTURES ========
+// =========================
+
+// cellule : représente une arête du graphe (arrivée + proba)
+typedef struct cellule {
+    int sommet_arrivee;        // numéro du sommet d’arrivée
+    float proba;               // probabilité de passage
+    struct cellule *suiv;      // pointeur vers la cellule suivante
+} cellule;
+
+// liste : ensemble des arêtes sortantes d’un sommet
+typedef struct {
+    cellule *head;             // tête de liste
+} liste;
+
+// liste_adjacence : tableau dynamique de listes
+typedef struct {
+    int taille;                // nombre de sommets
+    liste *tab;                // tableau de listes
+} liste_adjacence;
 
 
+// =========================
+// ==== FONCTIONS ==========
+// =========================
 
+// question 2
+cellule *creer_cellule(int arrivee, float proba);
+liste creer_liste_vide(void);
+void ajouter_cellule(liste *l, int arrivee, float proba);
+void afficher_liste(liste l);
 
+// question 3
+liste_adjacence readGraph(const char *filename);
 
+// question 4
+void verifier_markov(liste_adjacence G);
 
-
-
-
-
-#ifndef LAFARGE_GIRAULT_DESNOES_PROJET_C_PARTIE_1_H
-#define LAFARGE_GIRAULT_DESNOES_PROJET_C_PARTIE_1_H
-
-#endif //LAFARGE_GIRAULT_DESNOES_PROJET_C_PARTIE_1_H
+#endif // PARTIE_1_H

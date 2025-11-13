@@ -53,32 +53,32 @@ typedef struct {
 } t_partition;
 
 
-// ===============================================
-// === ÉTAPE 2 : STRUCTURES DIAGRAMME DE HASSE ===
-// ===============================================
-//
+
+//ÉTAPE 2 : STRUCTURES DIAGRAMME DE HASSE
+
+
 // (Ces structures sont maintenant dans hasse.h)
-//
 
 
-// ========================================
-// === PROTOTYPES FONCTIONS - ÉTAPE 1 =====
-// ========================================
 
-// --- Fonctions utilitaires (Pile) ---
+
+// PROTOTYPES FONCTIONS - ÉTAPE 1
+
+
+// Fonctions utilitaires (Pile)
 t_pile* creer_pile(int capacite_initiale);
 void empiler(t_pile *p, int id_sommet);
 int depiler(t_pile *p);
 int est_vide(t_pile *p);
 void liberer_pile(t_pile *p);
 
-// --- Fonctions utilitaires (Classe/Partition) ---
+// Fonctions utilitaires (Classe/Partition)
 void ajouter_sommet_classe(t_classe *c, int id_sommet);
 void ajouter_classe_partition(t_partition *p, t_classe nouvelle_classe);
 void afficher_partition(t_partition p);
 void liberer_partition(t_partition *p);
 
-// --- Fonctions principales (Tarjan) ---
+// Fonctions principales (Tarjan)
 
 /**
  * @brief Initialise le tableau des données Tarjan pour chaque sommet.
@@ -98,9 +98,9 @@ void tarjan_parcours(int u_id, liste_adjacence G, t_tarjan_vertex *data,
 t_partition algorithme_tarjan(liste_adjacence G);
 
 
-// ========================================
-// === PROTOTYPES FONCTIONS - ÉTAPE 2 & 3 ===
-// ========================================
+
+// PROTOTYPES FONCTIONS ÉTAPE 2 ET 3
+
 
 /**
  * @brief Crée un tableau pour savoir à quelle classe appartient chaque sommet.

@@ -79,6 +79,12 @@ build CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/hasse.c.o: C_COMPILER__LAF
   OBJECT_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
   OBJECT_FILE_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
 
+build CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/matrix.c.o: C_COMPILER__LAFARGE_GIRAULT_DESNOES_Projet_c_unscanned_Debug /Users/paulgirault/CLionProjects/LAFARGE_GIRAULT_DESNOES_Projet_c/matrix.c || cmake_object_order_depends_target_LAFARGE_GIRAULT_DESNOES_Projet_c
+  DEP_FILE = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/matrix.c.o.d
+  FLAGS = -g -std=gnu11 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.1.sdk -fcolor-diagnostics
+  OBJECT_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
+  OBJECT_FILE_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target LAFARGE_GIRAULT_DESNOES_Projet_c
@@ -87,7 +93,7 @@ build CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/hasse.c.o: C_COMPILER__LAF
 #############################################
 # Link the executable LAFARGE_GIRAULT_DESNOES_Projet_c
 
-build LAFARGE_GIRAULT_DESNOES_Projet_c: C_EXECUTABLE_LINKER__LAFARGE_GIRAULT_DESNOES_Projet_c_Debug CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/main.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_1.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_2.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/utils.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/hasse.c.o
+build LAFARGE_GIRAULT_DESNOES_Projet_c: C_EXECUTABLE_LINKER__LAFARGE_GIRAULT_DESNOES_Projet_c_Debug CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/main.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_1.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/Partie_2.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/utils.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/hasse.c.o CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir/matrix.c.o
   FLAGS = -g -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX26.1.sdk
   OBJECT_DIR = CMakeFiles/LAFARGE_GIRAULT_DESNOES_Projet_c.dir
   POST_BUILD = :

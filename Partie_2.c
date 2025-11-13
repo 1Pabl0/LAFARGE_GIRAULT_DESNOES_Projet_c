@@ -5,9 +5,8 @@
 // Macro simple pour trouver le minimum
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
 
-// ========================================
-// === IMPLÉMENTATION - UTILS PILE ========
-// ========================================
+// IMPLÉMENTATION UTILS POUR PILE
+
 
 t_pile* creer_pile(int capacite_initiale) {
     t_pile *p = malloc(sizeof(t_pile));
@@ -60,9 +59,7 @@ void liberer_pile(t_pile *p) {
     }
 }
 
-// ================================================
-// === IMPLÉMENTATION - UTILS CLASSE/PARTITION ====
-// ================================================
+
 
 // Initialise une classe (vide)
 t_classe creer_classe(char* nom) {
@@ -144,11 +141,11 @@ void liberer_partition(t_partition *p) {
     }
 }
 
-// ========================================
-// === IMPLÉMENTATION - ÉTAPE 1 (TARJAN) ==
-// ========================================
 
-//
+// ÉTAPE 1 (TARJAN)
+
+
+
 t_tarjan_vertex* initialiser_tarjan_data(liste_adjacence G) {
     t_tarjan_vertex* data = malloc(G.taille * sizeof(t_tarjan_vertex));
     if (!data) {
@@ -159,17 +156,17 @@ t_tarjan_vertex* initialiser_tarjan_data(liste_adjacence G) {
     for (int i = 0; i < G.taille; i++) {
         data[i].identifiant = i + 1; // ID 1-indexé
         data[i].numero = -1;         // Non visité
-        data[i].numero_accessible = -1; //
-        data[i].dans_pile = 0;       //
+        data[i].numero_accessible = -1;
+        data[i].dans_pile = 0;
     }
     return data;
 }
 
-//
+
 void tarjan_parcours(int u_id, liste_adjacence G, t_tarjan_vertex *data,
                      t_pile *pile, int *p_index, t_partition *partition)
 {
-    // u_idx est l'indice 0-indexé du sommet (ex: 0 pour sommet 1)
+    // u_idx est l'indice 0-indexé du sommet
     int u_idx = u_id - 1;
 
     // 1. Marquer le sommet 'u' comme visité
@@ -177,10 +174,10 @@ void tarjan_parcours(int u_id, liste_adjacence G, t_tarjan_vertex *data,
     data[u_idx].numero_accessible = *p_index;
     (*p_index)++;
     empiler(pile, u_id);
-    data[u_idx].dans_pile = 1; // <-- [CORRIGÉ]
+    data[u_idx].dans_pile = 1;
 
     // 2. Parcourir les voisins 'v' de 'u'
-    cellule *voisin = G.tab[u_idx].head; // <-- [CORRIGÉ]
+    cellule *voisin = G.tab[u_idx].head;
     while (voisin != NULL) {
         int v_id = voisin->sommet_arrivee;
         int v_idx = v_id - 1;
@@ -188,18 +185,17 @@ void tarjan_parcours(int u_id, liste_adjacence G, t_tarjan_vertex *data,
         if (data[v_idx].numero == -1) {
             // Cas 1: Voisin 'v' non visité
             tarjan_parcours(v_id, G, data, pile, p_index, partition);
-            // Mettre à jour le num_accessible de 'u'
+            // Mise à jour le num_accessible de 'u'
             data[u_idx].numero_accessible = MIN(data[u_idx].numero_accessible, data[v_idx].numero_accessible);
         }
         else if (data[v_idx].dans_pile) {
             // Cas 2: Voisin 'v' déjà visité ET dans la pile
-            // C'est un "back-edge"
             data[u_idx].numero_accessible = MIN(data[u_idx].numero_accessible, data[v_idx].numero);
         }
         voisin = voisin->suiv;
     }
 
-    // 3. Vérifier si 'u' est la racine d'une Composante Fortement Connexe (CFC)
+    // 3. Vérifier si 'u' est la racine d'une cfc
     if (data[u_idx].numero_accessible == data[u_idx].numero) {
         // 'u' est une racine. Dépiler jusqu'à 'u' pour former la classe.
         char nom_classe[10];
@@ -220,7 +216,7 @@ void tarjan_parcours(int u_id, liste_adjacence G, t_tarjan_vertex *data,
 }
 
 
-//
+
 t_partition algorithme_tarjan(liste_adjacence G) {
     // Initialisations
     t_partition partition = creer_partition();
@@ -242,10 +238,9 @@ t_partition algorithme_tarjan(liste_adjacence G) {
     return partition;
 }
 
-// ==================================================
-// === IMPLÉMENTATION - ÉTAPE 2 & 3 (À FAIRE) ======
-// ==================================================
-// (Ces fonctions seront implémentées dans les prochaines étapes)
+
+//ÉTAPE 2 & 3
+
 
 int* creer_tableau_appartenance(t_partition partition, int nb_sommets_graphe) {
     printf("\n[TODO: Étape 2 - Création tableau appartenance]\n");

@@ -14,5 +14,6 @@ add_executable(LAFARGE_GIRAULT_DESNOES_Projet_c
         utils.c     # <-- AJOUTER (il manquait .c)
         hasse.h
         hasse.c
-        Partie_2.c
+        matrix.h
+        matrix.c
 )

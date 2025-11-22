@@ -180,12 +180,12 @@ int main() {
         printf("1. Charger un graphe depuis un fichier\n");
         printf("2. Afficher la liste d'adjacence\n");
         printf("3. Vérifier si le graphe est de Markov\n");
-        printf("6. Exporter le graphe au format Mermaid (.mmd)\n");
+        printf("4. Exporter le graphe au format Mermaid (.mmd)\n");
         printf("\n--- Partie 2 ---\n");
-        printf("4. Calculer les classes (Tarjan)\n");
-        printf("7. Diagramme de Hasse + analyse des classes\n");
+        printf("5. Calculer les classes (Tarjan)\n");
+        printf("6. Diagramme de Hasse + analyse des classes\n");
         printf("\n--- Partie 3 ---\n");
-        printf("5. Calculs de distributions (Matriciel/Export CSV)\n");
+        printf("7. Calculs de distributions (Matriciel/Export CSV)\n");
         printf("8. Analyse par Classes (Stationnaire + Période)\n");
         printf("-----------------------------\n");
         printf("0. Quitter\n");
@@ -251,7 +251,7 @@ int main() {
                 }
                 break;
 
-            case 6: {
+            case 4: {
                 if (!graphe_charge) {
                     printf("\n⚠️  Aucun graphe n'est chargé. Utilisez l'option 1 d'abord.\n");
                     break;
@@ -271,7 +271,7 @@ int main() {
                 break;
             }
 
-            case 7: {
+            case 6: {
                 if (!graphe_charge) {
                     printf("\n⚠️  Aucun graphe n'est chargé. Utilisez l'option 1 d'abord.\n");
                     break;
@@ -311,7 +311,7 @@ int main() {
             }
 
 
-            case 4:
+            case 5:
                 if (!graphe_charge) {
                     printf("\n⚠️  Aucun graphe n'est chargé. Utilisez l'option 1 d'abord.\n");
                 } else {
@@ -326,7 +326,7 @@ int main() {
                 break;
 
                 // --- NOUVEAU CASE 5 (Partie 3) - Calcul P^n et Export CSV ---
-            case 5: {
+            case 7: {
                 if (!graphe_charge) {
                     printf("\n⚠️  Aucun graphe n'est chargé. Utilisez l'option 1 d'abord.\n");
                     break;

@@ -3,8 +3,7 @@
 //
 
 #include "matrix.h"
-
-#include "matrix.h"
+#include "Partie_2.h"
 #include <math.h> // Pour fabsf()
 
 
@@ -146,8 +145,8 @@ void displayMatrix(t_matrix m) {
 
 // IMPLÉMENTATION ÉTAPE 2 (SOUS-MATRICE)
 
-t_matrix subMatrix(t_matrix matrix, t_partition part, int compo_index) {
-    if (compo_index < 0 || compo_index >= part.nb_classes) {
+t_matrix subMatrix(t_matrix matrix, struct t_partition *part, int compo_index) {
+    if (compo_index < 0 || compo_index >= part->nb_classes) {
         fprintf(stderr, "Erreur: Indice de classe invalide.\n");
         // Retourne une matrice vide (taille 0)
         t_matrix m;
@@ -156,45 +155,117 @@ t_matrix subMatrix(t_matrix matrix, t_partition part, int compo_index) {
         return m;
     }
 
-    t_classe compo = part.classes[compo_index];
+    t_classe compo = part->classes[compo_index];
     int n_sub = compo.nb_sommets;
     t_matrix sub_m = createEmptyMatrix(n_sub);
 
-    // Mappe les ID de sommets de la classe à leur nouvel indice 0-indexé dans la sous-matrice
-
-    int *id_to_sub_index = (int*)malloc((matrix.rows + 1) * sizeof(int));
-    if (!id_to_sub_index) {
-        perror("Erreur d'allocation pour la map d'indices");
-        freeMatrix(&sub_m);
-        exit(EXIT_FAILURE);
-    }
-
-    // Initialisation et remplissage du mapping
-    for(int i = 0; i < matrix.rows + 1; i++) id_to_sub_index[i] = -1;
+    // Extraction de la sous-matrice
+    // Pour chaque sommet i de la classe (ligne)
     for (int i = 0; i < n_sub; i++) {
-        // compo.sommets[i] est l'ID 1-indexé du sommet
-        id_to_sub_index[compo.sommets[i]] = i; // ID_sommet -> Indice_sous-matrice
-    }
+        int sommet_i = compo.sommets[i]; // ID du sommet (1-indexé)
+        int idx_i = sommet_i - 1;        // Indice dans la matrice originale (0-indexé)
 
-    // Remplissage de la sous-matrice
-    for (int i = 0; i < n_sub; i++) {
-        // u_id est l'ID 1-indexé du sommet de départ (ligne)
-        int u_id = compo.sommets[i];
-        // u_idx est l'indice 0-indexé dans la matrice originale
-        int u_idx = u_id - 1;
-
+        // Pour chaque sommet j de la classe (colonne)
         for (int j = 0; j < n_sub; j++) {
-            // v_id est l'ID 1-indexé du sommet d'arrivée (colonne)
-            int v_id = compo.sommets[j];
-            // v_idx est l'indice 0-indexé dans la matrice originale
-            int v_idx = v_id - 1;
+            int sommet_j = compo.sommets[j]; // ID du sommet (1-indexé)
+            int idx_j = sommet_j - 1;        // Indice dans la matrice originale (0-indexé)
 
-            // Le coefficient dans la sous-matrice est le même que dans la matrice originale
-            // pour les sommets appartenant à la classe
-            sub_m.data[i][j] = matrix.data[u_idx][v_idx];
+            // Copie de la valeur de la matrice originale
+            if (idx_i >= 0 && idx_i < matrix.rows && idx_j >= 0 && idx_j < matrix.rows) {
+                sub_m.data[i][j] = matrix.data[idx_i][idx_j];
+            }
         }
     }
 
-    free(id_to_sub_index);
     return sub_m;
+}
+
+
+//Etape 3 :
+int gcd(int *vals, int nbvals) {
+    if (nbvals == 0) return 0;
+
+    // Initialise le résultat avec la première valeur.
+    int result = vals[0];
+
+    // Parcourt le reste du tableau et applique le PGCD au résultat cumulé.
+    for (int i = 1; i < nbvals; i++) {
+        int a = result;
+        int b = vals[i];
+
+        // Algorithme d'Euclide : PGCD(a, b) = PGCD(b, a mod b)
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+
+        // Le PGCD(result, vals[i]) est stocké dans 'a'
+        result = a;
+    }
+    return result;
+}
+
+// [DÉFI 1 - Commentaire et Explication]
+// Calcule la période d'une classe en cherchant les longueurs 'n' des chemins
+// qui reviennent à un état (M_sub^n a une diagonale non nulle).
+int getPeriod(t_matrix sub_matrix)
+{
+    int n = sub_matrix.rows;
+    if (n == 0) return 0;
+
+    // On alloue un tableau assez grand pour les périodes.
+    // L'analyse montre que le nombre de sommets 'n' suffit comme taille max.
+    int *periods = (int*)malloc(n * sizeof(int));
+    if (!periods) {
+        perror("Erreur d'allocation périodes");
+        exit(EXIT_FAILURE);
+    }
+    int period_count = 0;
+
+    // M_sub^cpt. Commence à M_sub^1.
+    t_matrix power_matrix = createEmptyMatrix(n);
+    copyMatrix(power_matrix, sub_matrix);
+
+    // Matrice temporaire pour le calcul de la puissance suivante
+    t_matrix result_matrix = createEmptyMatrix(n);
+
+    // On itère de cpt=1 à n*n (sécurité) pour trouver toutes les longueurs de cycles.
+    for (int cpt = 1; cpt <= n * n; cpt++)
+    {
+        int diag_nonzero = 0;
+        for (int i = 0; i < n; i++)
+        {
+            // Un coefficient diagonal > 0.0f indique un chemin de retour i -> i en 'cpt' étapes.
+            if (power_matrix.data[i][i] > 0.0f)
+            {
+                diag_nonzero = 1;
+                break;
+            }
+        }
+
+        if (diag_nonzero) {
+            // Correction du bug : vérifier l'espace avant d'ajouter
+            if (period_count < n) {
+                periods[period_count] = cpt;
+                period_count++;
+            }
+        }
+
+        // S'il ne reste plus de place pour stocker, on break.
+        if (period_count >= n) break;
+
+        // Calcul de la puissance suivante : M_sub^(cpt+1) = M_sub^cpt * M_sub
+        multiplyMatrices(power_matrix, sub_matrix, result_matrix);
+        copyMatrix(power_matrix, result_matrix);
+    }
+
+    freeMatrix(&power_matrix);
+    freeMatrix(&result_matrix);
+
+    // La période est le PGCD de toutes les longueurs de cycles trouvées.
+    int period = gcd(periods, period_count);
+    free(periods);
+
+    return period;
 }

@@ -6,9 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
 // ÉTAPE 1 STRUCTURES ALGORITHME DE TARJAN
-
 
 /**
  * @brief Structure pour stocker les informations d'un sommet
@@ -35,7 +33,7 @@ typedef struct {
  * @brief Structure pour une classe (Composante Fortement Connexe).
  * Implémentée comme un tableau dynamique de sommets.
  */
-typedef struct {
+typedef struct t_classe {
     char nom[10];           // Nom de la classe (ex: "C1")
     int *sommets;           // Tableau des identifiants des sommets (ex: {1, 5, 7})
     int nb_sommets;         // Nombre de sommets dans la classe (logical size)
@@ -46,15 +44,20 @@ typedef struct {
  * @brief Structure pour la partition (ensemble de toutes les classes).
  * Implémentée comme un tableau dynamique de classes.
  */
-typedef struct {
+typedef struct t_partition {
     t_classe *classes;      // Tableau de t_classe
     int nb_classes;         // Nombre de classes (logical size)
     int cap_classes;        // Capacité du tableau (physical size)
 } t_partition;
 
 
+// Maintenant on peut inclure matrix.h car nos types sont définis
+#include "matrix.h"
 
 
+// ============================================
+// PROTOTYPES UNIQUEMENT (pas d'implémentation)
+// ============================================
 
 // Fonctions utilitaires (Pile)
 t_pile* creer_pile(int capacite_initiale);
@@ -70,49 +73,16 @@ void afficher_partition(t_partition p);
 void liberer_partition(t_partition *p);
 
 // Fonctions principales (Tarjan)
-
-/**
- * @brief Initialise le tableau des données Tarjan pour chaque sommet.
- */
 t_tarjan_vertex* initialiser_tarjan_data(liste_adjacence G);
-
-/**
- * @brief Fonction récursive 'parcours' de l'algorithme de Tarjan.
- */
 void tarjan_parcours(int u_id, liste_adjacence G, t_tarjan_vertex *data,
                      t_pile *pile, int *p_index, t_partition *partition);
-
-/**
- * @brief Fonction principale qui exécute l'algorithme de Tarjan.
- * @return La partition du graphe en classes.
- */
 t_partition algorithme_tarjan(liste_adjacence G);
 
-
-
-// PROTOTYPES FONCTIONS ÉTAPE 2 ET 3
-
-
-/**
- * @brief Crée un tableau pour savoir à quelle classe appartient chaque sommet.
- * Ex: tab[5] = 1 (le sommet 5 appartient à la classe C1)
- */
+// Fonctions Étape 2 et 3
 int* creer_tableau_appartenance(t_partition partition, int nb_sommets_graphe);
-
-/**
- * @brief Crée le diagramme de Hasse (tableau de liens).
- */
 t_link_array* creer_diagramme_hasse(liste_adjacence G, t_partition partition, int* tab_appartenance);
-
-/**
- * @brief Affiche le diagramme au format Mermaid.
- */
 void afficher_diagramme_mermaid(t_partition partition, t_link_array *liens);
-
-/**
- * @brief Analyse les classes et affiche les caractéristiques du graphe.
- */
 void analyser_graphe(t_partition partition, t_link_array *liens);
-
+void analyse_classes_partie3(t_matrix M, t_partition partition, t_link_array *liens);
 
 #endif //PARTIE_2_H

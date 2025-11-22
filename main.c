@@ -55,6 +55,104 @@ void exportDistributionRow(int n, t_matrix M_power_n, int start_state_index, con
     fclose(file);
 }
 
+void analyse_classes_partie3(t_matrix M, t_partition partition, t_link_array *liens) {
+
+    // On réutilise la détection des classes transitoires/persistantes de l'analyse_graphe
+    int nb_classes = partition.nb_classes;
+    if (nb_classes == 0) return;
+
+    // est_transitoire[c] = 1 si la classe c a un lien sortant (persistante sinon)
+    int *est_transitoire = calloc(nb_classes, sizeof(int));
+    if (!est_transitoire) {
+        perror("Erreur allocation est_transitoire");
+        exit(EXIT_FAILURE);
+    }
+
+    // Détermination de la transitivité
+    for (int i = 0; i < liens->log_size; i++) {
+        int from = liens->links[i].from;
+        if (from >= 0 && from < nb_classes) {
+            est_transitoire[from] = 1;
+        }
+    }
+
+    printf("\n=== ÉTAPE 2 & DÉFI 3 : Analyse des Distributions par Classes ===\n");
+    float epsilon = 0.001f; // Critère de convergence pour les distributions
+
+    for (int c = 0; c < nb_classes; c++) {
+        t_classe *classe = &partition.classes[c];
+
+        printf("\n[%s] Classe: {", classe->nom);
+        for (int k = 0; k < classe->nb_sommets; k++) {
+            printf("%d", classe->sommets[k]);
+            if (k < classe->nb_sommets - 1) printf(",");
+        }
+        printf("}\n");
+
+        if (est_transitoire[c]) {
+            printf("   → Statut: Transitoire. Distribution limite nulle (0).\n");
+            continue;
+        }
+
+        // --- Classe Persistante ---
+        printf("   → Statut: Persistante.\n");
+
+        // 1. Extraction de la sous-matrice M_sub
+        t_matrix M_sub = subMatrix(M, &partition, c);
+        int n_sub = M_sub.rows;
+
+        if (n_sub == 0) continue;
+
+        // 2. Calcul de la Période (Défi 3)
+        int periode = getPeriod(M_sub);
+        printf("   → Période (d) : %d", periode);
+        if (periode == 1) printf(" (Apériodique)\n"); else printf(" (Périodique)\n");
+
+
+        // 3. Calcul de la Distribution Stationnaire (Validation Étape 2)
+
+        t_matrix M_curr = subMatrix(M, &partition, c);
+        t_matrix M_prev = createEmptyMatrix(n_sub);
+        t_matrix M_next = createEmptyMatrix(n_sub);
+
+        int k = 1;
+        float diff = 100.0f;
+        int max_iter = 1000;
+
+        // On cherche M_sub^k tel que M_sub^k ≈ M_sub^(k+1)
+        while (k <= max_iter && diff > epsilon) {
+            copyMatrix(M_prev, M_curr);
+            multiplyMatrices(M_curr, M_sub, M_next);
+            copyMatrix(M_curr, M_next);
+            diff = diffMatrix(M_curr, M_prev);
+            k++;
+        }
+
+        // Affichage de la Distribution Limite/Stationnaire
+        if (diff <= epsilon) {
+            printf("   → Convergence approchée après %d itérations (diff: %.6f).\n", k - 1, diff);
+        } else {
+            printf("   → La convergence n'a pas été atteinte après %d itérations (diff: %.6f).\n", max_iter, diff);
+        }
+
+        // La distribution est donnée par la première ligne (qui devrait être égale à toutes les autres si l'état est stationnaire)
+        printf("   → Distribution Stationnaire Approchée (pour cette classe) :\n");
+        printf("      |");
+        for(int j=0; j < n_sub; j++) {
+            printf(" %.4f", M_curr.data[0][j]);
+        }
+        printf(" |\n");
+
+        // Nettoyage
+        freeMatrix(&M_sub);
+        freeMatrix(&M_curr);
+        freeMatrix(&M_prev);
+        freeMatrix(&M_next);
+    }
+
+    free(est_transitoire);
+}
+
 
 // =========================================================
 // FONCTION PRINCIPALE main()
@@ -88,6 +186,7 @@ int main() {
         printf("7. Diagramme de Hasse + analyse des classes\n");
         printf("\n--- Partie 3 ---\n");
         printf("5. Calculs de distributions (Matriciel/Export CSV)\n");
+        printf("8. Analyse par Classes (Stationnaire + Période)\n");
         printf("-----------------------------\n");
         printf("0. Quitter\n");
         printf("-----------------------------\n");
@@ -211,6 +310,7 @@ int main() {
                 break;
             }
 
+
             case 4:
                 if (!graphe_charge) {
                     printf("\n⚠️  Aucun graphe n'est chargé. Utilisez l'option 1 d'abord.\n");
@@ -309,6 +409,38 @@ int main() {
 
                 break;
             }
+
+
+            case 8: {
+                if (!graphe_charge) {
+                    printf("\n⚠️  Aucun graphe n'est chargé. Utilisez l'option 1 d'abord.\n");
+                    break;
+                }
+                if (!partition_calculee) {
+                    printf("\n⚠️  Aucune partition calculée. Utilisez d'abord l'option 4 (Tarjan).\n");
+                    break;
+                }
+                if (!matrice_chargee) {
+                    M = createTransitionMatrix(G);
+                    matrice_chargee = 1;
+                }
+
+                // On s'assure d'avoir les liens (Hasse) pour détecter transitif/persistant
+                if (tab_appartenance == NULL || liens == NULL) {
+                    printf("\n⚙️  Calcul des liens de Hasse (nécessaire pour l'analyse)...\n");
+                    if (tab_appartenance != NULL) free(tab_appartenance);
+                    if (liens != NULL) { free(liens->links); free(liens); }
+
+                    tab_appartenance = creer_tableau_appartenance(partition, G.taille);
+                    liens = creer_diagramme_hasse(G, partition, tab_appartenance);
+                    removeTransitiveLinks(liens);
+                }
+
+                analyse_classes_partie3(M, partition, liens);
+
+                break;
+            }
+
 
             case 0:
                 if (partition_calculee) {

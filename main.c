@@ -200,7 +200,7 @@ int main() {
                 liens = creer_diagramme_hasse(G, partition, tab_appartenance);
 
                 printf("⚙️  Suppression des liens transitifs (Hasse réduit)...\n");
-                removeTransitiveLinks(liens);
+                removeTransitiveLinks(liens); // <-- optionnel
 
                 printf("⚙️  Génération du fichier Mermaid 'hasse.mmd'...\n");
                 afficher_diagramme_mermaid(partition, liens);

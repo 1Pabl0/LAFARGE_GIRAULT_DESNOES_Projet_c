@@ -2,7 +2,7 @@
 #define PARTIE_2_H
 
 #include "Partie_1.h" // Pour la structure liste_adjacence
-#include "hasse.h"      // <-- AJOUTÉ
+#include "hasse.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -323,5 +323,4 @@ Ce projet implémente **l'intégralité** de l'étude d'un graphe de Markov
 : - Structure - Probabilités - Connexité - Classes - Hasse -
 Stationnarité - Périodicité
 
-Le code est modulaire, propre et entièrement conforme aux 3 parties du
-sujet.
+Fait par Edouard et Paul et corentin
